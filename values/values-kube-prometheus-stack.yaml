@@ -1,0 +1,22 @@
+grafana:
+  adminPassword: admin #prom-operator
+  ingress:
+    enabled: true
+    annotations:
+      {
+        kubernetes.io/ingress.class: nginx,
+        kubernetes.io/tls-acme: "true",
+        cert-manager.io/cluster-issuer: letsencrypt-prod,
+        acme.cert-manager.io/http01-edit-in-place: "true",
+      }
+    labels: {}
+    hosts: [monitor.week9challenge.tk]
+    paths: [/]
+    tls:
+      - secretName: monitor-week9challenge-tls
+        hosts:
+          - monitor.week9challenge.tk
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false

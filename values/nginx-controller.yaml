@@ -5,3 +5,5 @@ controller:
       additionalLabels:
         release: my-kube-prometheus-stack
       enabled: true
+# Install with above commented for metrics disabled and after argocd and prometheus install do upgrade
+# helm upgrade my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager -f .\values\nginx-controller.yaml

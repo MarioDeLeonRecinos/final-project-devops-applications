@@ -1,0 +1,45 @@
+name: CD
+on:
+  push:
+    branches:
+      - main
+      - master
+env:
+  STATE_RELEASE_VERSION: 1.1.0
+jobs:
+  build-and-deploy:
+    name: Build Container Registry image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout
+
+      - name: Update submodules
+        run: git submodule update --init --recursive
+
+      - name: Steps for password file
+        run: |
+          echo "${{ secrets.USERS_PASSWORDS }}" >> createPassUser.txt \
+          echo
+
+      - name: Login to gcloud registry
+        id: gcloud
+        uses: elgohr/gcloud-login-action@v1
+        with:
+          account_key: ${{ secrets.GCLOUD_KEY }}
+
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v4
+        env:
+          USER: ${{ secrets.HTPASSWD_USER }}
+          PASSWORD: ${{ secrets.HTPASSWD_PASSWORD }}
+          GCP_USER: ${{ steps.gcloud.outputs.username }}
+          GCP_PASSWORD: ${{ steps.gcloud.outputs.password }}
+        with:
+          name: ${{secrets.PROJECT_NAME}}/week-4
+          username: ${{ steps.gcloud.outputs.username }}
+          password: ${{ steps.gcloud.outputs.password }}
+          registry: us.gcr.io
+          tags: "latest,${{ env.STATE_RELEASE_VERSION }}"
+          dockerfile: ./docker-resources/Dockerfile
+          buildargs: USER,PASSWORD

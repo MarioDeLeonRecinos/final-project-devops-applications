@@ -10,12 +10,12 @@ grafana:
         acme.cert-manager.io/http01-edit-in-place: "true",
       }
     labels: {}
-    hosts: [monitor.week9challenge.tk]
+    hosts: [monitor.fpdevelopment.tk]
     paths: [/]
     tls:
-      - secretName: monitor-week9challenge-tls
+      - secretName: monitor-fpdevelopment-tls
         hosts:
-          - monitor.week9challenge.tk
+          - monitor.fpdevelopment.tk
 prometheus:
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false

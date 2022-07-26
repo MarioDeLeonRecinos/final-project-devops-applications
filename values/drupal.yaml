@@ -1,3 +1,19 @@
+## @param drupalUsername User of the application
+## ref: https://github.com/bitnami/bitnami-docker-drupal#configuration
+##
+drupalUsername: admin
+## @param drupalPassword Application password
+## Defaults to a random 10-character alphanumeric string if not set
+## ref: https://github.com/bitnami/bitnami-docker-drupal#configuration
+##
+drupalPassword: admin123456
+
+allowEmptyPassword: false
+
+## @param existingSecret Name of a secret with the application password
+##
+existingSecret: ""
+
 ingress:
   enabled: true
   ## @param ingress.apiVersion Force Ingress API version (automatically detected if not set)
@@ -120,8 +136,9 @@ mariadb:
 ## @param externalDatabase.database Name of the existing database
 ##
 externalDatabase:
-  host: "my-gcloud-sqlproxy.drupal.svc.cluster.local"
+  host: my-gcloud-sql-proxy-gcloud-sqlproxy.drupal.svc.cluster.local #"34.83.124.11"
   port: 3306
   user: bn_drupal
-  password: "admin123"
-  database: my-sql-db-dev
+  password: admin123
+  database: bitnami_drupal
+# gcloud sql instances patch my-sql-db-dev --authorized-networks=0.0.0.0/8

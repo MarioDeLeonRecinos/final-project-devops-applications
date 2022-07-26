@@ -14,6 +14,9 @@ allowEmptyPassword: false
 ##
 existingSecret: ""
 
+service:
+  type: ClusterIP
+
 ingress:
   enabled: true
   ## @param ingress.apiVersion Force Ingress API version (automatically detected if not set)
@@ -136,7 +139,8 @@ mariadb:
 ## @param externalDatabase.database Name of the existing database
 ##
 externalDatabase:
-  host: my-gcloud-sql-proxy-gcloud-sqlproxy.drupal.svc.cluster.local #"34.83.124.11"
+  #"34.83.124.11" my-gcloud-sql-proxy-gcloud-sqlproxy.drupal.svc.cluster.local
+  host: my-gcloud-sql-proxy-gcloud-sqlproxy.drupal.svc.cluster.local
   port: 3306
   user: bn_drupal
   password: admin123

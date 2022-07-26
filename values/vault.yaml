@@ -1,26 +1,26 @@
-
 injector:
   enabled: true
 server:
   ingress:
     enabled: true
-    annotations: {
-      kubernetes.io/ingress.class: nginx,
-      kubernetes.io/tls-acme: "true",
-      cert-manager.io/cluster-issuer: letsencrypt-prod,
-      acme.cert-manager.io/http01-edit-in-place: "true"
+    annotations:
+      {
+        kubernetes.io/ingress.class: nginx,
+        kubernetes.io/tls-acme: "true",
+        cert-manager.io/cluster-issuer: letsencrypt-prod,
+        acme.cert-manager.io/http01-edit-in-place: "true",
       }
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     hosts:
-      - host: vault.week9challenge.tk
+      - host: vault.fpdevelopment.tk
         paths:
           - /
     pathType: ImplementationSpecific
-    tls: 
-      - secretName: vault-week9challenge-tls
+    tls:
+      - secretName: vault-fpdevelopment-tls
         hosts:
-        - vault.week9challenge.tk
+          - vault.fpdevelopment.tk
   dataStorage:
     enabled: true
     size: 10Gi

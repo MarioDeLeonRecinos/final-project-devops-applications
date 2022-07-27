@@ -1,0 +1,16 @@
+kubectl create namespace nginx-cert-manager
+kubectl create namespace vault
+kubectl create namespace minio
+kubectl create namespace drupal
+kubectl create namespace keda
+kubectl create namespace kube-grafana
+
+helm install my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager -f .\values\nginx-controller.yaml
+helm install my-cert-manager cert-manager/cert-manager -n nginx-cert-manager --set installCRDs=true
+kubectl apply -f .\yamls\cluster-issuer.yaml -n nginx-cert-manager  
+
+kubectl apply -f .\kubectl\yamls\secret-store.yaml -n drupal
+kubectl apply -f .\kubectl\yamls\external-secret-gcloud.yaml -n drupal
+
+kubectl apply -f .\kubectl\yamls\secret-store.yaml -n minio
+kubectl apply -f .\kubectl\yamls\external-secret-minio.yaml -n minio

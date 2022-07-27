@@ -41,14 +41,15 @@ my-prometheus-blackbox-exporter
 ## Secret create in Linux base console
 
 kubectl create secret docker-registry gcr-json-key \
- --docker-server=us.gcr.io \
- --docker-username=_json_key \
- --docker-password="$(cat ~/corresponding-json-key.json)" \
+--docker-server=us.gcr.io \
+--docker-username=_json_key \
+--docker-password="$(cat ~/corresponding-json-key.json)" \
 
 ### Project dependant
 
- --docker-email=cloud-build@micro-flight-356719.iam.gserviceaccount.com -n minio
- --docker-email=cloud-build@smooth-obelisk-356719.iam.gserviceaccount.com -n minio
+--docker-email=cloud-build@micro-flight-356719.iam.gserviceaccount.com -n minio
+
+--docker-email=cloud-build@smooth-obelisk-356719.iam.gserviceaccount.com -n minio
 
 ### Recover generated secret
 

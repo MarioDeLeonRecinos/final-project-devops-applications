@@ -1,6 +1,1 @@
-[submodule "zenko-cloudserver"]
-	path = zenko-cloudserver
-	url = https://github.com/MarioDeLeonRecinos/zenko-cloudserver
-[submodule "minio"]
-	path = minio
-	url = https://github.com/MarioDeLeonRecinos/minio
+

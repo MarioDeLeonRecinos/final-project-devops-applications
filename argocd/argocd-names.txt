@@ -1,0 +1,15 @@
+my-drupal drupal
+
+my-gcloud-sql-proxy drupal
+
+my-kube-prometheus-stack kube-grafana
+
+my-minio minio
+
+my-prometheus-blackbox-exporter kube-grafana
+
+vault vault
+
+keda keda
+
+external-secrets vault

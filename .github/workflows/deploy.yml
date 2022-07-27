@@ -1,0 +1,36 @@
+name: CD
+on:
+  push:
+    branches:
+      - main
+      - master
+env:
+  STATE_RELEASE_VERSION: 2022.7.26-debian-11-r1
+jobs:
+  build-and-deploy:
+    name: Build Container Registry image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout
+
+      - name: Steps for dockerbuild
+        run: |
+          chmod -R 755 ./minio/
+          mv ./minio/* ./
+
+      - name: Login to gcloud registry
+        id: gcloud
+        uses: elgohr/gcloud-login-action@v1
+        with:
+          account_key: ${{ secrets.GCLOUD_KEY_PROD }}
+
+      - name: Publish to Registry develop
+        uses: elgohr/Publish-Docker-Github-Action@v4
+        with:
+          name: ${{secrets.PROJECT_NAME_PROD}}/minio
+          username: ${{ steps.gcloud.outputs.username }}
+          password: ${{ steps.gcloud.outputs.password }}
+          registry: us.gcr.io
+          tags: "latest,${{ env.STATE_RELEASE_VERSION }}"
+          dockerfile: ./Dockerfile

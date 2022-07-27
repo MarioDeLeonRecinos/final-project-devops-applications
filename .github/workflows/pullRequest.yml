@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+    branches: ["develop"]
+env:
+  STATE_RELEASE_VERSION: 2022.7.26-debian-11-r1
+jobs:
+  pull-request:
+    name: Open PR to main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout
+
+      - name: Steps for dockerbuild
+        run: |
+          chmod -R 755 ./minio/
+          mv ./minio/* ./
+
+      - name: Login to gcloud registry
+        id: gcloud
+        uses: elgohr/gcloud-login-action@v1
+        with:
+          account_key: ${{ secrets.GCLOUD_KEY_DEV }}
+
+      - name: Publish to Registry develop
+        uses: elgohr/Publish-Docker-Github-Action@v4
+        with:
+          name: ${{secrets.PROJECT_NAME_DEV}}/minio
+          username: ${{ steps.gcloud.outputs.username }}
+          password: ${{ steps.gcloud.outputs.password }}
+          registry: us.gcr.io
+          tags: "latest,${{ env.STATE_RELEASE_VERSION }}"
+          dockerfile: ./Dockerfile
+
+      - uses: repo-sync/pull-request@v2
+        name: pull-request
+        with:
+          destination_branch: "main"
+          pr_title: "Pulling ${{ github.ref }} into main"
+          pr_body: "👑 *An automated PR*"
+          pr_reviewer: "mdeleon"
+          pr_draft: true
+          github_token: ${{ secrets.TOKEN_REPOSITORY }}

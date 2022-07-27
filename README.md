@@ -30,7 +30,7 @@ helm install my-argo-rollouts argo/argo-rollouts --version 2.17.0
 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
-PQ5CLqhj4KSOKTns
+QPFMPGKvgdrcUMPP
 
 ## Install names
 

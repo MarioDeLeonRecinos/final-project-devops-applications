@@ -5,7 +5,7 @@ on:
       - main
       - master
 env:
-  STATE_RELEASE_VERSION: 1.1.0
+  STATE_RELEASE_VERSION: 2022.7.26-debian-11-r1
 jobs:
   build-and-deploy:
     name: Build Container Registry image
@@ -14,32 +14,23 @@ jobs:
       - uses: actions/checkout@v3
         name: checkout
 
-      - name: Update submodules
-        run: git submodule update --init --recursive
-
       - name: Steps for password file
         run: |
-          echo "${{ secrets.USERS_PASSWORDS }}" >> createPassUser.txt \
-          echo
+          mv ./minio/* ./
+          ls
 
       - name: Login to gcloud registry
         id: gcloud
         uses: elgohr/gcloud-login-action@v1
         with:
-          account_key: ${{ secrets.GCLOUD_KEY }}
+          account_key: ${{ secrets.GCLOUD_KEY_PROD }}
 
-      - name: Publish to Registry
+      - name: Publish to Registry develop
         uses: elgohr/Publish-Docker-Github-Action@v4
-        env:
-          USER: ${{ secrets.HTPASSWD_USER }}
-          PASSWORD: ${{ secrets.HTPASSWD_PASSWORD }}
-          GCP_USER: ${{ steps.gcloud.outputs.username }}
-          GCP_PASSWORD: ${{ steps.gcloud.outputs.password }}
         with:
-          name: ${{secrets.PROJECT_NAME}}/week-4
+          name: ${{secrets.PROJECT_NAME_PROD}}/minio
           username: ${{ steps.gcloud.outputs.username }}
           password: ${{ steps.gcloud.outputs.password }}
           registry: us.gcr.io
           tags: "latest,${{ env.STATE_RELEASE_VERSION }}"
-          dockerfile: ./docker-resources/Dockerfile
-          buildargs: USER,PASSWORD
+          dockerfile: ./Dockerfile

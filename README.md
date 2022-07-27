@@ -4,13 +4,19 @@
 
 gcloud container clusters get-credentials my-gke-cluster
 
-gcloud container clusters get-credentials my-gke-cluster --zone us-west1-c --project week9-356019  && kubectl get secret gcr-json-key --namespace my-website -o yaml
+gcloud container clusters get-credentials my-gke-cluster --zone us-west1-c --project micro-flight-356719
+
+gcloud container clusters get-credentials my-gke-cluster --zone us-west1-c --project smooth-obelisk-356719
+
+### Optional
+
+&& kubectl get secret gcr-json-key --namespace my-website -o yaml
 
 ## Helm install nginx-controller and cert-manager
 
 helm install my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager -f .\values\nginx-controller.yaml
 
- helm install my-cert-manager cert-manager/cert-manager -n nginx-cert-manager --set installCRDs=true
+helm install my-cert-manager cert-manager/cert-manager -n nginx-cert-manager --set installCRDs=true
 
 ## Install cluster-issuer
 
@@ -31,3 +37,15 @@ PQ5CLqhj4KSOKTns
 my-kube-prometheus-stack
 
 my-prometheus-blackbox-exporter
+
+## Secret create in Linux base console
+
+kubectl create secret docker-registry gcr-json-key \
+ --docker-server=us.gcr.io \
+ --docker-username=_json_key \
+ --docker-password="$(cat ~/json-key-file.json)" \
+
+### Project dependant
+
+ --docker-email=cloud-build@micro-flight-356719.iam.gserviceaccount.com -n minio
+ --docker-email=cloud-build@smooth-obelisk-356719.iam.gserviceaccount.com -n minio

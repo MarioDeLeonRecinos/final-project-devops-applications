@@ -1,16 +1,52 @@
+## DEVELOPMENT
+
 kubectl create namespace nginx-cert-manager
 kubectl create namespace vault
 kubectl create namespace minio
 kubectl create namespace drupal
+kubectl create namespace argocd
 kubectl create namespace keda
 kubectl create namespace kube-grafana
 
-helm install my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager -f .\values\nginx-controller.yaml
+helm install my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager -f .\kubectl\values\dev\nginx-controller.yaml
 helm install my-cert-manager cert-manager/cert-manager -n nginx-cert-manager --set installCRDs=true
-kubectl apply -f .\yamls\cluster-issuer.yaml -n nginx-cert-manager  
+kubectl apply -f .\kubectl\yamls\cluster-issuer.yaml -n nginx-cert-manager  
+
+helm install my-argo-cd argo/argo-cd --version 4.9.5 -n argocd -f .\kubectl\values\dev\argo-cd-values.yaml 
+helm install my-argo-rollouts argo/argo-rollouts --version 2.17.0 -n default
 
 kubectl apply -f .\kubectl\yamls\secret-store.yaml -n drupal
 kubectl apply -f .\kubectl\yamls\external-secret-gcloud.yaml -n drupal
+kubectl apply -f .\kubectl\yamls\external-secret-drupal.yaml -n drupal
 
 kubectl apply -f .\kubectl\yamls\secret-store.yaml -n minio
 kubectl apply -f .\kubectl\yamls\external-secret-minio.yaml -n minio
+
+kubectl apply -f .\kubectl\yamls\scaling.yaml -n nginx-cert-manager
+
+## PRODUCTION
+
+kubectl create namespace nginx-cert-manager
+kubectl create namespace vault
+kubectl create namespace minio
+kubectl create namespace drupal
+kubectl create namespace argocd
+kubectl create namespace keda
+kubectl create namespace kube-grafana
+
+helm install my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager
+helm upgrade my-nginx-ingress ingress-nginx/ingress-nginx -n nginx-cert-manager -f .\kubectl\values\nginx-controller.yaml
+helm install my-cert-manager cert-manager/cert-manager -n nginx-cert-manager --set installCRDs=true
+kubectl apply -f .\kubectl\yamls\cluster-issuer.yaml -n nginx-cert-manager  
+
+helm install my-argo-cd argo/argo-cd --version 4.9.5 -n argocd -f .\kubectl\values\prod\argo-cd-values.yaml 
+helm install my-argo-rollouts argo/argo-rollouts --version 2.17.0 -n default
+
+kubectl apply -f .\kubectl\yamls\secret-store.yaml -n drupal
+kubectl apply -f .\kubectl\yamls\external-secret-gcloud.yaml -n drupal
+kubectl apply -f .\kubectl\yamls\external-secret-drupal.yaml -n drupal
+
+kubectl apply -f .\kubectl\yamls\secret-store.yaml -n minio
+kubectl apply -f .\kubectl\yamls\external-secret-minio.yaml -n minio
+
+kubectl apply -f .\kubectl\yamls\scaling.yaml -n nginx-cert-manager

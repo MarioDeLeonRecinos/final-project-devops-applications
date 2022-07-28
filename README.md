@@ -32,6 +32,8 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 QPFMPGKvgdrcUMPP
 
+hLwsbkqq2TNojlJ7
+
 ## Install names
 
 my-kube-prometheus-stack

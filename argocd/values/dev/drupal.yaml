@@ -2,17 +2,12 @@
 ## ref: https://github.com/bitnami/bitnami-docker-drupal#configuration
 ##
 drupalUsername: admin
-## @param drupalPassword Application password
-## Defaults to a random 10-character alphanumeric string if not set
-## ref: https://github.com/bitnami/bitnami-docker-drupal#configuration
-##
-drupalPassword: admin123456
 
 allowEmptyPassword: false
 
 ## @param existingSecret Name of a secret with the application password
 ##
-existingSecret: ""
+existingSecret: drupal-password-sync
 
 service:
   type: ClusterIP

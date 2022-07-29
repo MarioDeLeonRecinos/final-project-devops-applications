@@ -1,0 +1,18 @@
+existingSecret: service-account-key-sync
+existingSecretKey: credentials
+cloudsql:
+  instances:
+    - instance: my-sql-db-prod
+
+      # Optional abbreviation used to override the truncated instance name if the
+      # 15 character instance name prefix is not unique for use as a port
+      # identifier.
+      instanceShortName: ""
+      # GCP project where the instance exists.
+      project: smooth-obelisk-356719
+      # GCP region where the instance exists.
+      region: us-west1
+      # Port number for the proxy to expose for this instance.
+      port: 3306
+extraArgs: { term_timeout: 120s }
+# helm upgrade --install mysql-sqlproxy rimusz/gcloud-sqlproxy --namespace wordpress -f .\week9-kubernetes\values\gcloud-sql-proxy.yaml -i

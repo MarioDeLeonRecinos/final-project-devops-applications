@@ -24,7 +24,7 @@ jobs:
           account_key: ${{ secrets.GCLOUD_KEY_DEV }}
 
       - name: Publish to Registry develop
-        uses: elgohr/Publish-Docker-Github-Action@v4
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: ${{secrets.PROJECT_NAME_DEV}}/minio
           username: ${{ steps.gcloud.outputs.username }}
